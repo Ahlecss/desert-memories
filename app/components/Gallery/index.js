@@ -168,7 +168,7 @@ function Gallery() {
     }
 
     const imgs = images.map((plane, i) =>
-        <div className="plane-wrapper">
+        <div className="plane-wrapper" key={i}>
             <Plane
                 className="BasicPlane"
                 vertexShader={VertexShader}
