@@ -2,7 +2,7 @@
 
 import { Plane, useCurtains, useCurtainsEvent } from "react-curtains";
 import { useEffect, useRef, useState } from "react";
-import gsap, { Power4, Cubic } from "gsap";
+import gsap, { Power4, Cubic, Quad } from "gsap";
 import { isMobile } from "react-device-detect";
 import { Vec2, } from "curtainsjs";
 
@@ -244,7 +244,7 @@ function Gallery() {
             function handleDragEnd() {
                 gsap.to(offsetX, {
                     current: 0,
-                    duration: 0.4,
+                    duration: 0.7,
                     ease: Quad.easeOut,
                     overwrite: true
                 })
@@ -333,10 +333,10 @@ function Gallery() {
             </div>
             <button className={`absolute z-[100] left-8 top-8 transition-all duration-500 hover:opacity-80 font-extralight ${!canChangeView ? 'opacity-0' : ''}`} disabled={!canChangeView} onClick={onChangeView}>Change view</button>
             <button className={`absolute z-[100] left-8 top-16 transition-all duration-500 hover:opacity-80 font-extralight ${!canChangeView ? 'opacity-0' : ''}`} disabled={!canChangeView} onClick={onChangeNoisy}>Toggle effect</button>
-            <p className={`absolute z-[100] left-8 bottom-12 transition-all duration-500 font-extralight	${!canChangeView ? 'opacity-0' : ''}`} >( {isMobile ? 'Drag' : 'Scroll '} to rotate )</p>
+            <p className={`absolute z-[100] right-8 top-12 md:right-auto md:top-auto md:left-8 md:bottom-12 transition-all duration-500 font-extralight	${!canChangeView ? 'opacity-0' : ''}`} >( {isMobile ? 'Drag' : 'Scroll '} to rotate )</p>
 
             <h1 className={`absolute w-max z-[100] -translate-y-1/2 -translate-x-1/2 left-[50%] top-[50%] text-2xl md:text-8xl`}>Desert Memories</h1>
-            <div className={`absolute z-[100] flex flex-col items-end right-8 bottom-12 transition-all duration-500`}>
+            <div className={`absolute z-[100] flex flex-col items-end right-8 bottom-24 md:bottom-12 transition-all duration-500`}>
                 <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Pictures by</span> <a href="https://www.remydumas.fr/" target="_blank" className="hover:opacity-80 font-normal	">Rémy Dumas</a></h3>
                 <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Font by</span> <a href="https://pangrampangram.com/products/hatton" target="_blank" className="hover:opacity-80 font-normal	">Pangram Pangram</a></h3>
                 <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Code and idea by</span> <a href="https://alexissejourne.fr" target="_blank" className="hover:opacity-80 font-normal	">Alexis Sejourné</a></h3>

@@ -7,6 +7,9 @@ body {
   overflow: hidden;
   background-color: #252525;
 }
+html, main{
+  background-color: #252525;
+}
 
 .curtains-canvas {
   position: fixed;
