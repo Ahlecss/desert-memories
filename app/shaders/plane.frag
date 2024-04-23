@@ -13,6 +13,7 @@ void main() {
         // textures coords are ranging from 0.0 to 1.0 on both axis
         // textureCoord.x += sin(textureCoord.y * 25.0) * cos(textureCoord.x * 25.0) * (cos(u_time / 50.0)) / 25.0;
 
+        // textureCoord.x += u_time * 0.1;
         gl_FragColor = texture2D(uSampler0, textureCoord);
         // gl_FragColor = vec4(vec3(1.0, 0., 0.), 1.);
 }
