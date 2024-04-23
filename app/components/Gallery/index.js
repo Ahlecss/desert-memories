@@ -1,33 +1,33 @@
 'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { Vec2, } from "curtainsjs";
 import { Plane, useCurtains, useCurtainsEvent } from "react-curtains";
+import { useEffect, useRef, useState } from "react";
+import gsap, { Power4, Cubic } from "gsap";
+import { isMobile } from "react-device-detect";
+import { Vec2, } from "curtainsjs";
 
 import { easeOutCubic, lerp } from "../../utils/math"
 import VertexShader from "../../shaders/plane.vert"
 import FragmentShader from "../../shaders/plane.frag"
-import './gallery.css'
-import gsap, { Power3, Power4 } from "gsap";
-import { Cubic } from "gsap";
-import { isMobile } from "react-device-detect";
 import { textAnimation } from "@/app/utils/animations";
+
+import './gallery.css'
 
 function Gallery() {
 
     const globalCurtains = useRef([]);
 
-    const galleryWrap = useRef([]);
-    const scrollTarget = useRef(0);
     const mouseCoords = useRef(new Vec2(0, 0));
-    const unwrap = useRef(0);
-    const cardsEffect = useRef(0);
-    const scroll = useRef(0);
-    const canPlay = useRef(false);
-    const initialPositionY = useRef(9);
-    const initialPositionX = useRef(0);
-    const [canChangeView, setChangeView] = useState(false);
+    const scrollTarget = useRef(0);
     const offsetX = useRef(0);
+    const scroll = useRef(0);
+
+    const unwrap = useRef(0);
+    const canPlay = useRef(false);
+    const [canChangeView, setChangeView] = useState(false);
+
+    const hasChanged = useRef(true);
+    const hasNoisy = useRef(true);
 
     let startX;
 
@@ -121,6 +121,11 @@ function Gallery() {
             type: "1f",
             value: 0,
         },
+        noisyEffect: {
+            name: "u_noisyEffect",
+            type: "1f",
+            value: 0,
+        },
         isMobile: {
             name: "u_isMobile",
             type: "1f",
@@ -160,6 +165,9 @@ function Gallery() {
         }).add(() => {
             canPlay.current = true
             setChangeView(true)
+            Array.from(document.getElementsByTagName('img')).forEach((img) => {
+                img.remove()
+            })
         }, "-=1")
         curtains.planes.forEach((plane, i) => {
             plane.uniforms.index.value = i
@@ -190,6 +198,7 @@ function Gallery() {
 
         if (typeof window != 'undefined') {
             window.mouse = new Vec2(0, 0);
+
             const onScroll = (e) => {
                 const delta = {};
                 delta.y = -e.deltaY;
@@ -205,22 +214,18 @@ function Gallery() {
             }
             const mouseXTo = gsap.quickTo(window.mouse, 'x', {
                 duration: 0.1,
-                // ease: Strong.easeOut
                 ease: Cubic.easeOut,
             })
             const mouseYTo = gsap.quickTo(window.mouse, 'y', {
                 duration: 0.1,
-                // ease: Strong.easeOut
                 ease: Cubic.easeOut,
             })
 
             const onMouseMove = (e) => {
-                mouseXTo((e.clientX))
-                mouseYTo(((e.clientY)))
-                mouseCoords.current = globalCurtains.current.planes[1].mouseToPlaneCoords(window.mouse);
-                console.log(mouseCoords.current)
+                mouseXTo((e.clientX / window.innerWidth) * 2 - 1)
+                mouseYTo(-((e.clientY) / window.innerHeight) * 2 + 1)
+                mouseCoords.current = window.mouse;
             }
-
 
             function handleDragStart(event) {
                 // Store initial mouse position
@@ -263,18 +268,36 @@ function Gallery() {
 
     const onChangeView = () => {
         setChangeView(false)
+        hasChanged.current = !hasChanged.current
         globalCurtains.current.planes.forEach((plane, i) => {
             gsap.to(plane.uniforms.cardsEffect, {
-                value: 3,
+                value: hasChanged.current ? 10 : 3,
                 duration: 2,
                 delay: 0.2 * i,
                 ease: Power4.easeInOut
             })
             gsap.to(plane.uniforms.initialPositionY, {
-                value: 2.5,
+                value: hasChanged.current ? 9 : 2.5,
                 duration: 2,
                 delay: 3,
                 ease: Power4.easeInOut,
+            }).then(() => {
+                setChangeView(true)
+            })
+        })
+    }
+
+    const onChangeNoisy = () => {
+        setChangeView(false)
+        hasNoisy.current = !hasNoisy.current
+        globalCurtains.current.planes.forEach((plane, i) => {
+            gsap.to(plane.uniforms.noisyEffect, {
+                value: hasNoisy.current ? 0 : 1,
+                duration: 2,
+                delay: 0.2 * i,
+                ease: Power4.easeInOut
+            }).then(() => {
+                setChangeView(true)
             })
         })
     }
@@ -282,17 +305,9 @@ function Gallery() {
     const onResize = () => {
         if (typeof window !== 'undefined') {
             uniforms.u_res.value = new Vec2(window.innerWidth, window.innerHeight)
-            // uniforms.u_PR.value = window.devicePixelRatio.toFixed(1)
         }
     }
     onResize()
-
-    const onRender = (plane) => {
-        // plane.uniforms.time.value++;
-        // plane.uniforms.scroll.value += (scroll.current - scrollTarget.current) * 0.01;
-        // plane.uniforms.unwrap.value = unwrap.current;
-        // plane.uniforms.cardsEffect.value = cardsEffect.current;
-    }
 
     const imgs = images.map((plane, i) =>
         <div className="plane-wrapper" key={i}>
@@ -301,18 +316,10 @@ function Gallery() {
                 vertexShader={VertexShader}
                 fragmentShader={FragmentShader}
                 uniforms={uniforms}
-                // onRender={onRender}
-                // onReady={() => onReady(i)}
                 widthSegments={200}
                 heightSegments={200}
                 watchScroll={false}
                 cullFace={"none"}
-            // drawCheckMargins={{
-            //     top: 0,
-            //     right: -100,
-            //     bottom: 0,
-            //     left: -100,
-            // }}
             >
                 <img src={plane.src} className="h-full w-full" alt="" />
             </Plane>
@@ -325,7 +332,8 @@ function Gallery() {
                 {imgs}
             </div>
             <button className={`absolute z-[100] left-8 top-8 transition-all duration-500 hover:opacity-80 font-extralight ${!canChangeView ? 'opacity-0' : ''}`} disabled={!canChangeView} onClick={onChangeView}>Change view</button>
-            <p className={`absolute z-[100] left-8 bottom-12 transition-all duration-500 font-extralight	${!canChangeView ? 'opacity-0' : ''}`} >( {isMobile? 'Drag' : 'Scroll '} to rotate )</p>
+            <button className={`absolute z-[100] left-8 top-16 transition-all duration-500 hover:opacity-80 font-extralight ${!canChangeView ? 'opacity-0' : ''}`} disabled={!canChangeView} onClick={onChangeNoisy}>Toggle effect</button>
+            <p className={`absolute z-[100] left-8 bottom-12 transition-all duration-500 font-extralight	${!canChangeView ? 'opacity-0' : ''}`} >( {isMobile ? 'Drag' : 'Scroll '} to rotate )</p>
 
             <h1 className={`absolute w-max z-[100] -translate-y-1/2 -translate-x-1/2 left-[50%] top-[50%] text-2xl md:text-8xl`}>Desert Memories</h1>
             <div className={`absolute z-[100] flex flex-col items-end right-8 bottom-12 transition-all duration-500`}>
@@ -333,6 +341,8 @@ function Gallery() {
                 <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Font by</span> <a href="https://pangrampangram.com/products/hatton" target="_blank" className="hover:opacity-80 font-normal	">Pangram Pangram</a></h3>
                 <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Code and idea by</span> <a href="https://alexissejourne.fr" target="_blank" className="hover:opacity-80 font-normal	">Alexis Sejourné</a></h3>
             </div>
+
+            <div className="curtain-intro"></div>
         </div>
     )
 
