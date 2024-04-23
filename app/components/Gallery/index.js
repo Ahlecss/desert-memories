@@ -237,6 +237,12 @@ function Gallery() {
                 startX = event.touches[0].clientX;
             }
             function handleDragEnd() {
+                gsap.to(offsetX, {
+                    current: 0,
+                    duration: 0.4,
+                    ease: Quad.easeOut,
+                    overwrite: true
+                })
                 window.removeEventListener('drag', handleDrag);
                 window.removeEventListener('dragend', handleDragEnd);
             }
@@ -313,7 +319,7 @@ function Gallery() {
 
     )
     return (
-        <div className="w-full h-full">
+        <div className="">
             <div className="BasicPlane">
                 {imgs}
             </div>
