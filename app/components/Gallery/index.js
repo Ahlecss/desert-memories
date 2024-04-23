@@ -247,10 +247,11 @@ function Gallery() {
                 window.removeEventListener('dragend', handleDragEnd);
             }
             // EVENTS
-            window.addEventListener('wheel', onScroll);
-            window.addEventListener('mousemove', onMouseMove);
-            window.addEventListener('mousemove', onMouseMove);
-            window.addEventListener('touchstart', handleDragStart);
+            setTimeout(() => {
+                window.addEventListener('wheel', onScroll);
+                window.addEventListener('mousemove', onMouseMove);
+                window.addEventListener('touchstart', handleDragStart), 9000
+            });
 
         }
     })
@@ -323,13 +324,14 @@ function Gallery() {
             <div className="BasicPlane">
                 {imgs}
             </div>
-            <button className={`absolute z-[100] left-8 top-8 transition-all duration-500 ${!canChangeView ? 'opacity-0' : ''}`} disabled={!canChangeView} onClick={onChangeView}>Change view</button>
+            <button className={`absolute z-[100] left-8 top-8 transition-all duration-500 hover:opacity-80 font-extralight ${!canChangeView ? 'opacity-0' : ''}`} disabled={!canChangeView} onClick={onChangeView}>Change view</button>
+            <p className={`absolute z-[100] left-8 bottom-12 transition-all duration-500 font-extralight	${!canChangeView ? 'opacity-0' : ''}`} >( {isMobile? 'Drag' : 'Scroll '} to rotate )</p>
 
             <h1 className={`absolute w-max z-[100] -translate-y-1/2 -translate-x-1/2 left-[50%] top-[50%] text-2xl md:text-8xl`}>Desert Memories</h1>
-            <div className={`absolute z-[100] flex flex-col items-end right-8 bottom-8 transition-all duration-500`}>
-                <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Pictures by</span> <a href="https://www.remydumas.fr/" target="_blank">Rémy Dumas</a></h3>
-                <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Font by</span> <a href="https://pangrampangram.com/products/hatton" target="_blank">Pangram Pangram</a></h3>
-                <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Code and idea by</span> <a href="https://alexissejourne.fr" target="_blank">Alexis Sejourné</a></h3>
+            <div className={`absolute z-[100] flex flex-col items-end right-8 bottom-12 transition-all duration-500`}>
+                <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Pictures by</span> <a href="https://www.remydumas.fr/" target="_blank" className="hover:opacity-80 font-normal	">Rémy Dumas</a></h3>
+                <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Font by</span> <a href="https://pangrampangram.com/products/hatton" target="_blank" className="hover:opacity-80 font-normal	">Pangram Pangram</a></h3>
+                <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Code and idea by</span> <a href="https://alexissejourne.fr" target="_blank" className="hover:opacity-80 font-normal	">Alexis Sejourné</a></h3>
             </div>
         </div>
     )
