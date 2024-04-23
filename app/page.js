@@ -6,7 +6,7 @@ import { Curtains } from "react-curtains";
 
 export default function Home() {
   return (
-    <main className="">
+    <main className="w-full h-full">
       <Curtains>
         <Gallery />
       </Curtains>

@@ -11,6 +11,7 @@ import './gallery.css'
 import gsap, { Power3, Power4 } from "gsap";
 import { Cubic } from "gsap";
 import { isMobile } from "react-device-detect";
+import { textAnimation } from "@/app/utils/animations";
 
 function Gallery() {
 
@@ -24,6 +25,7 @@ function Gallery() {
     const scroll = useRef(0);
     const canPlay = useRef(false);
     const initialPositionY = useRef(9);
+    const initialPositionX = useRef(0);
     const [canChangeView, setChangeView] = useState(false);
 
     const images = [
@@ -101,6 +103,11 @@ function Gallery() {
             type: "1f",
             value: 0,
         },
+        initialPositionX: {
+            name: "u_initialPositionX",
+            type: "1f",
+            value: 9,
+        },
         initialPositionY: {
             name: "u_initialPositionY",
             type: "1f",
@@ -125,22 +132,32 @@ function Gallery() {
 
         globalCurtains.current.planes.forEach((plane, i) => {
             plane.uniforms.initialPositionY.value = uniforms.initialPositionY.value;
+            gsap.fromTo(plane.uniforms.initialPositionX,
+                {
+                    value: - 25. + Math.random() * 50,
+                },
+                {
+                    value: 0,
+                    duration: 3,
+                    delay: 3 + 0.2 * i,
+                    ease: Power4.easeInOut
+                })
             gsap.to(plane.uniforms.cardsEffect, {
                 value: 10,
                 duration: 3,
-                delay: 0.2 * i,
+                delay: 3 + 0.2 * i,
                 ease: Power4.easeInOut
             })
         })
         tl.to(unwrap, {
             current: 1,
             duration: 2,
-            delay: 3.5,
+            delay: 3 + 3.5,
             ease: Power4.easeInOut
         }).add(() => {
             canPlay.current = true
             setChangeView(true)
-        },"-=1")
+        }, "-=1")
         curtains.planes.forEach((plane, i) => {
             plane.uniforms.index.value = i
             plane.uniforms.totalImages.value = curtains.planes.length
@@ -170,7 +187,6 @@ function Gallery() {
 
         if (typeof window != 'undefined') {
             window.mouse = new Vec2(0, 0);
-
             const onScroll = (e) => {
                 const delta = {};
                 delta.y = -e.deltaY;
@@ -201,11 +217,41 @@ function Gallery() {
                 mouseCoords.current = globalCurtains.current.planes[1].mouseToPlaneCoords(window.mouse);
                 console.log(mouseCoords.current)
             }
+
+
+            function handleDragStart(event) {
+                // Store initial mouse position
+                startX = event.touches[0].clientX;
+                startY = event.touches[0].clientY;
+                // Calculate initial box offset
+                offsetX.current = 0;
+                // Add event listeners for drag and dragend events
+                window.addEventListener('touchmove', handleDrag);
+                window.addEventListener('touchend', handleDragEnd);
+            }
+            // Function to handle drag event
+            function handleDrag(event) {
+                offsetX.current = lerp(offsetX.current, event.touches[0].clientX - startX, easeOutCubic(0.5));
+                startX = event.touches[0].clientX;
+                startY = event.touches[0].clientX;
+            }
+            function handleDragEnd() {
+                galleryWrapper.current.removeEventListener('drag', handleDrag);
+                galleryWrapper.current.removeEventListener('dragend', handleDragEnd);
+            }
             // EVENTS
             window.addEventListener('wheel', onScroll);
             window.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('touchstart', handleDragStart);
+
         }
     })
+
+    useEffect(() => {
+        textAnimation('h1', 2, 'chars')
+        textAnimation('h3', 9, 'lines')
+    }, [])
 
     const onChangeView = () => {
         setChangeView(false)
@@ -266,11 +312,18 @@ function Gallery() {
 
     )
     return (
-        <div>
+        <div className="w-full h-full">
             <div className="BasicPlane">
                 {imgs}
             </div>
             <button className={`absolute z-[100] left-8 top-8 transition-all duration-500 ${!canChangeView ? 'opacity-0' : ''}`} disabled={!canChangeView} onClick={onChangeView}>Change view</button>
+
+            <h1 className={`absolute w-max z-[100] -translate-y-1/2 -translate-x-1/2 left-[50%] top-[50%] text-8xl`}>Desert Memories</h1>
+            <div className={`absolute z-[100] flex flex-col items-end right-8 bottom-8 transition-all duration-500`}>
+                <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Pictures by</span> <a href="https://www.remydumas.fr/" target="_blank">Rémy Dumas</a></h3>
+                <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Font by</span> <a href="https://pangrampangram.com/products/hatton" target="_blank">Pangram Pangram</a></h3>
+                <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Code and idea by</span> <a href="https://alexissejourne.fr" target="_blank">Alexis Sejourné</a></h3>
+            </div>
         </div>
     )
 

@@ -12,6 +12,7 @@ uniform float u_index;
 uniform float u_totalIndex;
 uniform float u_scroll;
 uniform float u_scrollSpeed;
+uniform float u_initialPositionX;
 uniform float u_initialPositionY;
 
 uniform float u_unwrap;
@@ -52,6 +53,7 @@ void main() {
     // Start animation
     vertexRotation.y -= u_initialPositionY - u_cardsEffect + u_isMobile * 1.;
 
+    vertexRotation.x += u_initialPositionX;
     // Positions of each plane on X and Z while moving
     vertexRotation.x += sin(+2. * 3.1415 * (u_unwrap * u_index / u_totalIndex) + u_scroll * 1. + u_time * 0.001) * 3.1415 * 1.5;
     vertexRotation.z -= cos(+2. * 3.1415 * (u_unwrap * u_index / u_totalIndex) + u_scroll * 1. + u_time * 0.001) * 3.1415 * 1.5;
