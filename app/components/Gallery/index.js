@@ -27,6 +27,9 @@ function Gallery() {
     const initialPositionY = useRef(9);
     const initialPositionX = useRef(0);
     const [canChangeView, setChangeView] = useState(false);
+    const offsetX = useRef(0);
+
+    let startX;
 
     const images = [
         {
@@ -171,7 +174,7 @@ function Gallery() {
 
         curtains.planes.forEach((plane, i) => {
             if (canPlay.current) plane.uniforms.time.value++;
-            plane.uniforms.scroll.value += (scroll.current - scrollTarget.current) * 0.01;
+            plane.uniforms.scroll.value += (scroll.current - scrollTarget.current - offsetX.current * 0.2) * 0.01;
             plane.uniforms.scrollSpeed.value = lerp(plane.uniforms.scrollSpeed.value, Math.abs(scroll.current - scrollTarget.current) * 0.1, 0.1);
             plane.uniforms.unwrap.value = unwrap.current;
             plane.uniforms.mouse.value = mouseCoords.current;
@@ -222,7 +225,6 @@ function Gallery() {
             function handleDragStart(event) {
                 // Store initial mouse position
                 startX = event.touches[0].clientX;
-                startY = event.touches[0].clientY;
                 // Calculate initial box offset
                 offsetX.current = 0;
                 // Add event listeners for drag and dragend events
@@ -233,11 +235,10 @@ function Gallery() {
             function handleDrag(event) {
                 offsetX.current = lerp(offsetX.current, event.touches[0].clientX - startX, easeOutCubic(0.5));
                 startX = event.touches[0].clientX;
-                startY = event.touches[0].clientX;
             }
             function handleDragEnd() {
-                galleryWrapper.current.removeEventListener('drag', handleDrag);
-                galleryWrapper.current.removeEventListener('dragend', handleDragEnd);
+                window.removeEventListener('drag', handleDrag);
+                window.removeEventListener('dragend', handleDragEnd);
             }
             // EVENTS
             window.addEventListener('wheel', onScroll);
@@ -318,7 +319,7 @@ function Gallery() {
             </div>
             <button className={`absolute z-[100] left-8 top-8 transition-all duration-500 ${!canChangeView ? 'opacity-0' : ''}`} disabled={!canChangeView} onClick={onChangeView}>Change view</button>
 
-            <h1 className={`absolute w-max z-[100] -translate-y-1/2 -translate-x-1/2 left-[50%] top-[50%] text-8xl`}>Desert Memories</h1>
+            <h1 className={`absolute w-max z-[100] -translate-y-1/2 -translate-x-1/2 left-[50%] top-[50%] text-2xl md:text-8xl`}>Desert Memories</h1>
             <div className={`absolute z-[100] flex flex-col items-end right-8 bottom-8 transition-all duration-500`}>
                 <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Pictures by</span> <a href="https://www.remydumas.fr/" target="_blank">Rémy Dumas</a></h3>
                 <h3 className="text-lg tracking-tight"><span className="font-sans text-sm tracking-wide opacity-80">Font by</span> <a href="https://pangrampangram.com/products/hatton" target="_blank">Pangram Pangram</a></h3>
