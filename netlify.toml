@@ -1,5 +1,5 @@
 [[redirects]]
   from = "/*"
-  to = "https://travelmemories.netlify.app/:splat"
+  to = "https://journeymemories.netlify.app/:splat"
   status = 301
   force = true
