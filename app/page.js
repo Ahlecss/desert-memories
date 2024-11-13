@@ -6,9 +6,6 @@ import DesertGallery from "./components/Desert";
 export default function Home() {
   return (
     <main className="">
-      <Curtains>
-        <DesertGallery />
-      </Curtains>
     </main>
   );
 }

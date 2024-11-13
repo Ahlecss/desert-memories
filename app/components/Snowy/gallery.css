@@ -47,11 +47,12 @@ html, main{
   display: inline-block;
 }
 
-@keyframes appear {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+h1 {
+  font-weight: bold;
+  font-variation-settings: "wght" 700, "wdth" 620;
+}
+
+h1, h3 {
+  color: transparent !important;
+  text-shadow: 0 0 0px white;;
 }

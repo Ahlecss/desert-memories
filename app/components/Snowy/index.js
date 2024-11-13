@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCurtains, useCurtainsEvent } from "react-curtains";
 import { isMobile } from "react-device-detect";
 
-import { textDesertAnimation } from "@/utils/animations";
+import { textSnowyAnimation } from "@/utils/animations";
 import { easeOutCubic, lerp } from "@/utils/math";
 import Layout from "../Layout";
 import './gallery.css';
@@ -228,8 +228,8 @@ function Gallery(props) {
     })
 
     useEffect(() => {
-        textDesertAnimation('h1', 2, 'chars')
-        textDesertAnimation('h3', 9, 'lines')
+        textSnowyAnimation('h1', 2, 'chars')
+        textSnowyAnimation('h3', 9, 'lines')
     }, [])
 
     const onChangeView = () => {

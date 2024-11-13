@@ -1,6 +1,15 @@
+import FragmentShaderDesert from "@/shaders/desert.frag";
+import VertexShaderDesert from "@/shaders/desert.vert";
+
+import FragmentShaderSnowy from "@/shaders/snowy.frag";
+import VertexShaderSnowy from "@/shaders/snowy.vert";
+
+
 export const datas = {
     desert: {
         title: 'Desert Memories',
+        fragment: FragmentShaderDesert,
+        vertex: VertexShaderDesert,
         images: [
             {
                 src: 'desert1.jpg'
@@ -36,9 +45,11 @@ export const datas = {
     },
     snowy: {
         title: 'Snowy Memories',
+        fragment: FragmentShaderSnowy,
+        vertex: VertexShaderSnowy,
         images: [
             {
-                src: 'desert1.png'
+                src: 'desert1.jpg'
             },
             {
                 src: 'desert2.jpg'
