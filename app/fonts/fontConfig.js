@@ -34,3 +34,27 @@ export const Hatton = localFont({
     // },
   ],
 })
+
+
+export const Neue = localFont({
+  src: [
+    {
+      path: './Neue/PPNeueCorp-NormalUltralight.otf',
+      weight: '200',
+      style: 'normal',
+      variable: 'font-creative-serif-light'
+    },
+    {
+      path: './Neue/PPNeueCorp-NormalMedium.otf',
+      weight: '500',
+      style: 'normal',
+      variable: 'font-creative-serif-normal'
+    },
+    {
+      path: './Neue/PPNeueCorp-NormalUltrabold.otf',
+      weight: '800',
+      style: 'normal',
+      variable: 'font-creative-serif-bold'
+    },
+  ],
+})

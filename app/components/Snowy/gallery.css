@@ -1,0 +1,57 @@
+body {
+  /* make the body fits our viewport */
+  position: relative;
+  width: 100%;
+  height: 105vh;
+  margin: 0;
+  overflow: hidden;
+  background-color: #252525;
+}
+html, main{
+  background-color: #252525;
+}
+
+.curtains-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.plane-wrapper {
+  /* width: 100vw; */
+  height: 800px;
+}
+
+/* basic plane */
+
+.BasicPlane {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  aspect-ratio: 0.66;
+}
+
+.BasicPlane img {
+  display: none;
+}
+
+.split-parent {
+  overflow: hidden;
+}
+
+.split-child {
+  display: inline-block;
+}
+
+@keyframes appear {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

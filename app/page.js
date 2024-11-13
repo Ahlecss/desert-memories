@@ -1,14 +1,13 @@
 'use client';
 
-import Image from "next/image";
-import Gallery from "./components/Gallery";
 import { Curtains } from "react-curtains";
+import DesertGallery from "./components/Desert";
 
 export default function Home() {
   return (
     <main className="">
       <Curtains>
-        <Gallery />
+        <DesertGallery />
       </Curtains>
     </main>
   );

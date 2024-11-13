@@ -31,3 +31,16 @@ body {
     text-wrap: balance;
   }
 }
+
+.curtain-intro {
+  position: absolute;
+  width: 100%;
+  height: 105vh;
+  margin: 0;
+  overflow: hidden;
+  background-color: #111;
+  z-index: 1000;
+  animation: 1s linear 3s forwards appear;
+  opacity: 1;
+  pointer-events: none;
+}

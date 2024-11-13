@@ -2,7 +2,7 @@
 import gsap, { Cubic, Power3, Power4 } from 'gsap'
 import SplitType from 'split-type';
 
-export function textAnimation(classes, delay, type) {
+export function textDesertAnimation(classes, delay, type) {
 
     function wrap(el, wrapper) {
         wrapper.classList.add('split-parent')
