@@ -26,6 +26,15 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+nav {
+  transition: all ease 0.5s;
+  transition-timing-function: cubic-bezier(0.8, 0.2, 0.2, 1.2);
+  overflow: hidden;
+}
+
+.menu-list {
+  transition: all ease 1s;
+}
 @layer utilities {
   .text-balance {
     text-wrap: balance;

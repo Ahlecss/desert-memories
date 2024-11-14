@@ -67,6 +67,11 @@ function Gallery(props) {
             type: "1f",
             value: 0,
         },
+        scrollTarget: {
+            name: "u_scrollTarget",
+            type: "1f",
+            value: 0,
+        },
         unwrap: {
             name: "u_unwrap",
             type: "1f",
@@ -75,12 +80,17 @@ function Gallery(props) {
         initialPositionX: {
             name: "u_initialPositionX",
             type: "1f",
-            value: 9,
+            value: 3,
         },
         initialPositionY: {
             name: "u_initialPositionY",
             type: "1f",
-            value: 9,
+            value: 0,
+        },
+        initialPositionZ: {
+            name: "u_initialPositionZ",
+            type: "1f",
+            value: 5,
         },
         cardsEffect: {
             name: "u_cardsEffect",
@@ -97,6 +107,21 @@ function Gallery(props) {
             type: "1f",
             value: 0,
         },
+        startAnim: {
+            name: "u_startAnim",
+            type: "1f",
+            value: 1,
+        },
+        startAnimRemoveRotation: {
+            name: "u_startAnimRemoveRotation",
+            type: "1f",
+            value: 1,
+        },
+        startControl: {
+            name: "u_startControl",
+            type: "1f",
+            value: 0,
+        },
 
     }
     useCurtains((curtains) => {
@@ -105,28 +130,104 @@ function Gallery(props) {
         const tl = gsap.timeline({})
 
         globalCurtains.current.planes.forEach((plane, i) => {
-            plane.uniforms.initialPositionY.value = uniforms.initialPositionY.value;
             gsap.fromTo(plane.uniforms.initialPositionX,
                 {
-                    value: - 25,
+                    value: 28,
                 },
                 {
-                    value: 0,
+                    value: -10,
                     duration: 3,
-                    delay: 3 + 0.01 * i,
-                    ease: Power4.easeInOut
+                    delay: 2 + 0.1 * i,
+                    ease: Power4.ease
                 })
-            gsap.to(plane.uniforms.cardsEffect, {
-                value: 10,
-                duration: 3,
-                delay: 3 + 0.2 * i,
-                ease: Power4.easeInOut
-            })
+            gsap.fromTo(plane.uniforms.initialPositionY,
+                {
+                    value: 0,
+                },
+                {
+                    value: 1,
+                    duration: 3,
+                    delay: 2 + 0.1 * i,
+                    ease: Power4.ease
+                })
+            gsap.fromTo(plane.uniforms.initialPositionZ,
+                {
+                    value: 26,
+                },
+                {
+                    value: 2,
+                    duration: 3,
+                    delay: 2 + 0.1 * i,
+                    ease: Power4.ease
+                })
+
+
+            gsap.fromTo(plane.uniforms.initialPositionX,
+                {
+                    value: 5,
+                },
+                {
+                    value: -5,
+                    duration: 2,
+                    delay: 5 + 0.1 * i,
+                    ease: Power4.ease
+                })
+            gsap.fromTo(plane.uniforms.initialPositionY,
+                {
+                    value: 5,
+                },
+                {
+                    value: -5,
+                    duration: 2,
+                    delay: 5 + 0.1 * i,
+                    ease: Power4.ease
+                })
+            gsap.fromTo(plane.uniforms.initialPositionZ,
+                {
+                    value: 6,
+                },
+                {
+                    value: 8,
+                    duration: 2,
+                    delay: 5 + 0.1 * i,
+                    ease: Power4.ease
+                })
+
+
+            gsap.fromTo(plane.uniforms.initialPositionZ,
+                {
+                    value: 8,
+                },
+                {
+                    value: 4,
+                    duration: 2,
+                    delay: 7,
+                    ease: Power4.ease
+                }).then(() => {
+                    gsap.to(plane.uniforms.startAnim,
+                        {
+                            value: 0,
+                            duration: 2,
+                        }
+                    )
+                    gsap.to(plane.uniforms.startControl,
+                        {
+                            value: 1,
+                            duration: 2,
+                        }
+                    )
+                    gsap.to(plane.uniforms.startAnimRemoveRotation,
+                        {
+                            value: 0,
+                            duration: 0,
+                        }
+                    )
+                })
         })
         tl.to(unwrap, {
             current: 1,
-            duration: 2,
-            delay: 3 + 3.5,
+            duration: 6,
+            delay: 1,
             ease: Power4.easeInOut
         }).add(() => {
             canPlay.current = true
@@ -146,10 +247,13 @@ function Gallery(props) {
     useCurtainsEvent('onRender', (curtains) => {
         scrollTarget.current = lerp(scrollTarget.current, 0, 0.05);
 
+        // console.log('speed', scrollSpeed.value)
         curtains.planes.forEach((plane, i) => {
-            if (canPlay.current) plane.uniforms.time.value++;
+            // if (canPlay.current) 
+            plane.uniforms.time.value++;
             plane.uniforms.scroll.value += (scroll.current - scrollTarget.current - offsetX.current * 0.2) * 0.01;
             plane.uniforms.scrollSpeed.value = lerp(plane.uniforms.scrollSpeed.value, Math.abs(scroll.current - scrollTarget.current) * 0.1, 0.1);
+            if(plane.uniforms.scrollTarget) plane.uniforms.scrollTarget.value = scrollTarget.current;
             plane.uniforms.unwrap.value = unwrap.current;
             plane.uniforms.mouse.value = mouseCoords.current;
             plane.uniforms.u_res.value = uniforms.u_res.value;
@@ -176,7 +280,7 @@ function Gallery(props) {
                 else if (delta.y < -60) {
                     delta.y = -60;
                 }
-                scrollTarget.current = lerp(scrollTarget.current, delta.y * 0.2, easeOutCubic(0.1));
+                scrollTarget.current = lerp(scrollTarget.current, delta.y * 0.4, easeOutCubic(0.01));
             }
             const mouseXTo = gsap.quickTo(window.mouse, 'x', {
                 duration: 0.1,
@@ -228,44 +332,44 @@ function Gallery(props) {
     })
 
     useEffect(() => {
-        textSnowyAnimation('h1', 2, 'chars')
-        textSnowyAnimation('h3', 9, 'lines')
+        textSnowyAnimation('h1', 1, 'chars')
+        textSnowyAnimation('h3', 10, 'lines')
     }, [])
 
     const onChangeView = () => {
-    //     setChangeView(false)
-    //     hasChanged.current = !hasChanged.current
-    //     globalCurtains.current.planes.forEach((plane, i) => {
-    //         gsap.to(plane.uniforms.cardsEffect, {
-    //             value: hasChanged.current ? 10 : 3,
-    //             duration: 2,
-    //             delay: 0.2 * i,
-    //             ease: Power4.easeInOut
-    //         })
-    //         gsap.to(plane.uniforms.initialPositionY, {
-    //             value: hasChanged.current ? 9 : 2.5,
-    //             duration: 2,
-    //             delay: 3,
-    //             ease: Power4.easeInOut,
-    //         }).then(() => {
-    //             setChangeView(true)
-    //         })
-    //     })
+        //     setChangeView(false)
+        //     hasChanged.current = !hasChanged.current
+        //     globalCurtains.current.planes.forEach((plane, i) => {
+        //         gsap.to(plane.uniforms.cardsEffect, {
+        //             value: hasChanged.current ? 10 : 3,
+        //             duration: 2,
+        //             delay: 0.2 * i,
+        //             ease: Power4.easeInOut
+        //         })
+        //         gsap.to(plane.uniforms.initialPositionY, {
+        //             value: hasChanged.current ? 9 : 2.5,
+        //             duration: 2,
+        //             delay: 3,
+        //             ease: Power4.easeInOut,
+        //         }).then(() => {
+        //             setChangeView(true)
+        //         })
+        //     })
     }
 
     const onChangeNoisy = () => {
-    //     setChangeView(false)
-    //     hasNoisy.current = !hasNoisy.current
-    //     globalCurtains.current.planes.forEach((plane, i) => {
-    //         gsap.to(plane.uniforms.noisyEffect, {
-    //             value: hasNoisy.current ? 0 : 1,
-    //             duration: 2,
-    //             delay: 0.2 * i,
-    //             ease: Power4.easeInOut
-    //         }).then(() => {
-    //             setChangeView(true)
-    //         })
-    //     })
+        //     setChangeView(false)
+        //     hasNoisy.current = !hasNoisy.current
+        //     globalCurtains.current.planes.forEach((plane, i) => {
+        //         gsap.to(plane.uniforms.noisyEffect, {
+        //             value: hasNoisy.current ? 0 : 1,
+        //             duration: 2,
+        //             delay: 0.2 * i,
+        //             ease: Power4.easeInOut
+        //         }).then(() => {
+        //             setChangeView(true)
+        //         })
+        //     })
     }
 
     const onResize = () => {

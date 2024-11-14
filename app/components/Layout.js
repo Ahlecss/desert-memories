@@ -33,13 +33,13 @@ export default function Layout(props) {
         </div>
     )
     return (
-        <div>
+        <div className="h-[100vh] w-[100vw] relative">
             <div className="BasicPlane">
                 {imgs}
             </div>
             <button className={`absolute z-[100] left-8 top-8 transition-all duration-500 hover:opacity-80 font-extralight ${!canChangeView ? 'opacity-0' : ''}`} disabled={!canChangeView} onClick={onChangeView}>Change view</button>
             <button className={`absolute z-[100] left-8 top-16 transition-all duration-500 hover:opacity-80 font-extralight ${!canChangeView ? 'opacity-0' : ''}`} disabled={!canChangeView} onClick={onChangeEffect}>Toggle effect</button>
-            <p className={`absolute z-[100] right-8 top-12 md:right-auto md:top-auto md:left-8 md:bottom-12 transition-all duration-500 font-extralight	${!canChangeView ? 'opacity-0' : ''}`} >( {isMobile ? 'Drag' : 'Scroll '} to rotate )</p>
+            <p className={`absolute z-[100] left-8 bottom-0 md:right-auto md:top-auto md:left-8 md:bottom-12 transition-all duration-500 font-extralight	${!canChangeView ? 'opacity-0' : ''}`} >( {isMobile ? 'Drag' : 'Scroll '} to rotate )</p>
 
             <h1 className={`absolute w-max z-[100] -translate-y-1/2 -translate-x-1/2 left-[50%] top-[50%] text-2xl md:text-8xl ${!isLoaded ? 'opacity-0' : ''}`}>{data.title}</h1>
             <div className={`absolute z-[100] flex flex-col items-end right-8 bottom-24 md:bottom-12 transition-all duration-500 ${!isLoaded ? 'opacity-0' : ''}`}>
