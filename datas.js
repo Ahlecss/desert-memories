@@ -49,34 +49,34 @@ export const datas = {
         vertex: VertexShaderSnowy,
         images: [
             {
-                src: 'desert1.jpg'
+                src: 'snowy1.jpeg'
             },
             {
-                src: 'desert2.jpg'
+                src: 'snowy2.jpeg'
             },
             {
-                src: 'desert3.jpg'
+                src: 'snowy3.jpeg'
             },
             {
-                src: 'desert4.jpg'
+                src: 'snowy4.jpeg'
             },
             {
-                src: 'desert5.jpg'
+                src: 'snowy5.jpeg'
             },
             {
-                src: 'desert6.jpg'
+                src: 'snowy6.jpeg'
             },
             {
-                src: 'desert7.jpg'
+                src: 'snowy7.jpeg'
             },
             {
-                src: 'desert8.jpg'
+                src: 'snowy8.jpeg'
             },
             {
-                src: 'desert9.jpg'
+                src: 'snowy9.jpeg'
             },
             {
-                src: 'desert10.jpg'
+                src: 'snowy10.jpeg'
             },
         ]
     }

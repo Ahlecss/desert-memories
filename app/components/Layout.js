@@ -5,7 +5,6 @@ import { Plane } from "react-curtains";
 import FragmentShader from "@/shaders/desert.frag";
 import VertexShader from "@/shaders/desert.vert";
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 
 export default function Layout(props) {
 

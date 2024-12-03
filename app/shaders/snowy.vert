@@ -13,6 +13,7 @@ uniform float u_totalIndex;
 uniform float u_scroll;
 uniform float u_scrollSpeed;
 uniform float u_scrollTarget;
+uniform float u_scrollDirection;
 uniform float u_initialPositionX;
 uniform float u_initialPositionY;
 uniform float u_initialPositionZ;
@@ -54,7 +55,7 @@ float dissipatingWave(float dist, float time, float speed) {
     float amplitude = 0.1; // Amplifier l'amplitude selon la vitesse
 
     // Onde avec dissipation
-    float wave = cos(dist * (speed * (0.2 + 15. * u_isMobile) )) + 0.5;
+    float wave = cos(dist * (speed * (0.2 + 15. * u_isMobile) ));
     // float wave = sin(dist * (speed * 0.2)) * 0.5;
     return wave;
 }
@@ -68,12 +69,13 @@ void main() {
     // Rotate each plane on itself while moving
     // vertexRotation = vertexRotation * rotationX(-0.2 * 3.1415) * rotationZ(0.);
     // vertexRotation = vertexRotation * rotationX(0.) * rotationZ(2. * 3.1415 * 0.3 * -u_unwrap * u_index / u_totalIndex - u_scroll * 1. - u_time * 0.001);
-    vertexRotation = vertexRotation * rotationX((-0.2 + (0.1 * u_isMobile)) * 3.1415 * u_startControl) * rotationZ((2. * 3.1415 * 0.4 * -1. * u_index / u_totalIndex - u_time * 0.02 ) * u_startAnimRemoveRotation);
+    vertexRotation = vertexRotation * rotationX((-0.25 + (0.1 * u_isMobile)) * 3.1415 * u_startControl) * rotationZ((2. * 3.1415 * 0.4 * -1. * u_index / u_totalIndex - u_time * 0.02 ) * u_startAnimRemoveRotation);
 
     // Start animation
     // vertexRotation.y -= u_initialPositionY + u_isMobile * 1.;
     // vertexRotation.x -= u_initialPositionX + u_isMobile * 1.;
     vertexRotation.z -= u_initialPositionZ + u_isMobile * 1.;
+    
     // Positions of each plane on X and Z while moving
     // vertexRotation.x += sin(+2. * 3.1415 * (u_unwrap * u_index / u_totalIndex) + u_scroll * 1. + u_time * 0.001) * 3.1415 * 1.5;
     // vertexRotation.z -= cos(+2. * 3.1415 * (u_unwrap * u_index / u_totalIndex) + u_scroll * 1. + u_time * 0.001) * 3.1415 * 1.5;
@@ -95,10 +97,12 @@ void main() {
     // Center wrap effect
     // vertexRotation.z -= circle(textureCoord, textureCoord + vertexPosition.xy, + 3. + u_isMobile) * -1.;
 
+    // Center wrap on scroll
     float distanceToCenter = length(vertexPosition.xy - vertexPosition.xy / 2.);
     float wave = dissipatingWave(distanceToCenter, u_time * 0.5, u_scrollTarget);
-    vertexRotation.z += wave;
-    // vertexRotation.z += u_scrollSpeed;
+    
+    vertexRotation.z += wave * u_scrollDirection;
+
 
     // Animation
     vertexRotation.z -= u_cardsEffect * 0.6 - u_isMobile * 3.;

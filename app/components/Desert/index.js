@@ -145,6 +145,7 @@ function Gallery(props) {
 
     useCurtainsEvent('onRender', (curtains) => {
         scrollTarget.current = lerp(scrollTarget.current, 0, 0.05);
+        console.log(curtains)
 
         curtains.planes.forEach((plane, i) => {
             if (canPlay.current) plane.uniforms.time.value++;

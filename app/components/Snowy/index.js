@@ -3,12 +3,14 @@
 import { Vec2, } from "curtainsjs";
 import gsap, { Cubic, Power4, Quad } from "gsap";
 import { useEffect, useRef, useState } from "react";
-import { useCurtains, useCurtainsEvent } from "react-curtains";
+import { ShaderPass, useCurtains, useCurtainsEvent } from "react-curtains";
 import { isMobile } from "react-device-detect";
 
 import { textSnowyAnimation } from "@/utils/animations";
 import { easeOutCubic, lerp } from "@/utils/math";
 import Layout from "../Layout";
+import passVs from '../../shaders/shaderPass.vert'
+import passFs from '../../shaders/shaderPass.frag'
 import './gallery.css';
 
 function Gallery(props) {
@@ -19,6 +21,7 @@ function Gallery(props) {
 
     const mouseCoords = useRef(new Vec2(0, 0));
     const scrollTarget = useRef(0);
+    const scrollDirection = useRef(0);
     const offsetX = useRef(0);
     const scroll = useRef(0);
 
@@ -69,6 +72,11 @@ function Gallery(props) {
         },
         scrollTarget: {
             name: "u_scrollTarget",
+            type: "1f",
+            value: 0,
+        },
+        scrollDirection: {
+            name: "u_scrollDirection",
             type: "1f",
             value: 0,
         },
@@ -242,18 +250,26 @@ function Gallery(props) {
             plane.uniforms.isMobile.value = isMobile;
         });
         //images[i].uniforms.index.value = i;
+        // return () => {
+        //     // console.log(globalCurtains.current)
+        //     // if(globalCurtains.current) globalCurtains.current.dispose()
+        // }
     });
 
     useCurtainsEvent('onRender', (curtains) => {
-        scrollTarget.current = lerp(scrollTarget.current, 0, 0.05);
+        scrollTarget.current = lerp(scrollTarget.current, 0, 0.01);
+
+        scrollDirection.current = lerp(scrollDirection.current, Math.min(Math.max(scrollTarget.current, -1), 1), 0.1);
 
         // console.log('speed', scrollSpeed.value)
         curtains.planes.forEach((plane, i) => {
             // if (canPlay.current) 
+            console.log(scrollDirection.current)
             plane.uniforms.time.value++;
             plane.uniforms.scroll.value += (scroll.current - scrollTarget.current - offsetX.current * 0.2) * 0.01;
             plane.uniforms.scrollSpeed.value = lerp(plane.uniforms.scrollSpeed.value, Math.abs(scroll.current - scrollTarget.current) * 0.1, 0.1);
-            if(plane.uniforms.scrollTarget) plane.uniforms.scrollTarget.value = scrollTarget.current;
+            if (plane.uniforms.scrollTarget) plane.uniforms.scrollTarget.value = scrollTarget.current;
+            if (plane.uniforms.scrollDirection) plane.uniforms.scrollDirection.value = scrollDirection.current
             plane.uniforms.unwrap.value = unwrap.current;
             plane.uniforms.mouse.value = mouseCoords.current;
             plane.uniforms.u_res.value = uniforms.u_res.value;
@@ -381,6 +397,12 @@ function Gallery(props) {
 
     return (
         <div className="">
+            {/* <ShaderPass
+                vertexShader={passVs}
+                fragmentShader={passFs}
+                // uniforms={passUniforms}
+                // clear={false}
+            /> */}
             <Layout data={data} uniforms={uniforms} canChangeView={canChangeView} onChangeEffect={onChangeNoisy} onChangeView={onChangeView} />
         </div>
     )
