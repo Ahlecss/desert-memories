@@ -264,7 +264,6 @@ function Gallery(props) {
         // console.log('speed', scrollSpeed.value)
         curtains.planes.forEach((plane, i) => {
             // if (canPlay.current) 
-            console.log(scrollDirection.current)
             plane.uniforms.time.value++;
             plane.uniforms.scroll.value += (scroll.current - scrollTarget.current - offsetX.current * 0.2) * 0.01;
             plane.uniforms.scrollSpeed.value = lerp(plane.uniforms.scrollSpeed.value, Math.abs(scroll.current - scrollTarget.current) * 0.1, 0.1);
@@ -403,7 +402,7 @@ function Gallery(props) {
                 // uniforms={passUniforms}
                 // clear={false}
             /> */}
-            <Layout data={data} uniforms={uniforms} canChangeView={canChangeView} onChangeEffect={onChangeNoisy} onChangeView={onChangeView} />
+            <Layout data={data} uniforms={uniforms} canChangeView={canChangeView} /*onChangeEffect={onChangeNoisy} onChangeView={onChangeView}*/ />
         </div>
     )
 

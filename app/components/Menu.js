@@ -19,7 +19,7 @@ export default function Menu() {
         refSize.height = nav.current.clientHeight
         refSize.width = nav.current.clientWidth
 
-        console.log(refSize)
+        // console.log(refSize)
 
     }, [])
     const mouseEnter = () => {

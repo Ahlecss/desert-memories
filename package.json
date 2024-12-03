@@ -9,9 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/third-parties": "^15.0.3",
     "glslify": "^7.1.1",
     "gsap": "^3.12.5",
-    "next": "14.2.2",
+    "next": "^14.2.19",
     "raw-loader": "^4.0.2",
     "react": "^18",
     "react-curtains": "^1.0.10",
