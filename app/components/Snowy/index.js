@@ -374,17 +374,16 @@ function Gallery(props) {
 
     const onChangeNoisy = () => {
         //     setChangeView(false)
-        //     hasNoisy.current = !hasNoisy.current
-        //     globalCurtains.current.planes.forEach((plane, i) => {
-        //         gsap.to(plane.uniforms.noisyEffect, {
-        //             value: hasNoisy.current ? 0 : 1,
-        //             duration: 2,
-        //             delay: 0.2 * i,
-        //             ease: Power4.easeInOut
-        //         }).then(() => {
-        //             setChangeView(true)
-        //         })
-        //     })
+            hasNoisy.current = !hasNoisy.current
+            globalCurtains.current.planes.forEach((plane, i) => {
+                gsap.to(plane.uniforms.noisyEffect, {
+                    value: hasNoisy.current ? 0 : 1,
+                    duration: 2,
+                    ease: Power4.easeInOut
+                }).then(() => {
+                    // setChangeView(true)
+                })
+            })
     }
 
     const onResize = () => {
@@ -402,7 +401,7 @@ function Gallery(props) {
                 // uniforms={passUniforms}
                 // clear={false}
             /> */}
-            <Layout data={data} uniforms={uniforms} canChangeView={canChangeView} /*onChangeEffect={onChangeNoisy} onChangeView={onChangeView}*/ />
+            <Layout data={data} uniforms={uniforms} canChangeView={canChangeView} onChangeEffect={onChangeNoisy} /*onChangeView={onChangeView}*/ />
         </div>
     )
 
