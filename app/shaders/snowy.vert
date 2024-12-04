@@ -87,8 +87,8 @@ void main() {
 
     // Infinite carousel left to right
     // vertexRotation.x += mod(u_scroll + (3. * u_totalIndex) * (u_index / u_totalIndex),  (3. * u_totalIndex)) -  (1.5 * u_totalIndex);
-    vertexRotation.x -= ( u_initialPositionX + u_isMobile * 1.) * u_startAnim + u_startControl * (mod(u_scroll / 2. + (2. * u_totalIndex) * (u_index / u_totalIndex),  (2. * u_totalIndex)) -  (1. * u_totalIndex));
-    vertexRotation.y -= ( u_initialPositionY + u_isMobile * 1.) * u_startAnim + u_startControl * (mod(u_scroll / 2. + (2. * u_totalIndex) * (u_index / u_totalIndex),  (2. * u_totalIndex)) -  (1. * u_totalIndex));
+    vertexRotation.x -= ( u_initialPositionX + u_isMobile * 5.) * u_startAnim + u_startControl * (mod(u_scroll / 2. + (2. * u_totalIndex) * (u_index / u_totalIndex),  (2. * u_totalIndex)) -  (1. * u_totalIndex));
+    vertexRotation.y -= ( u_initialPositionY + u_isMobile * 5.) * u_startAnim + u_startControl * (mod(u_scroll / 2. + (2. * u_totalIndex) * (u_index / u_totalIndex),  (2. * u_totalIndex)) -  (1. * u_totalIndex));
 
     // Animation also
     vertexRotation.y -= vertexRotation.z / 10.;
