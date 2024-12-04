@@ -171,7 +171,7 @@ void main() {
 
 
         float test = f*f*f+.6*f*f+.5*f;
-        vec3 textureColor = texture2D(uSampler0, vec2((0.2 + u_isMobile * 4.) * test * u_noisyEffect + textureCoord.x, (0.3 + u_isMobile * 4.) * test *u_noisyEffect + textureCoord.y)).rgb;
+        vec3 textureColor = texture2D(uSampler0, vec2((0.2 * 1 - u_isMobile) * test * u_noisyEffect + textureCoord.x, (0.3 * 1 - u_isMobile) * test * u_noisyEffect + textureCoord.y)).rgb;
     gl_FragColor = vec4(textureColor,1.);
 
 }
