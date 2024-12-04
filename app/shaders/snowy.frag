@@ -7,6 +7,7 @@ varying float vWave;
 uniform sampler2D uSampler0;
 
 uniform float u_time;
+uniform float u_isMobile;
 uniform vec2 u_mouse;
 uniform vec2 u_res;
 uniform float u_noisyEffect;
@@ -170,7 +171,7 @@ void main() {
 
 
         float test = f*f*f+.6*f*f+.5*f;
-        vec3 textureColor = texture2D(uSampler0, vec2(0.2 * test * u_noisyEffect + textureCoord.x, 0.3 * test *u_noisyEffect + textureCoord.y)).rgb;
+        vec3 textureColor = texture2D(uSampler0, vec2((0.2 + u_isMobile * 4.) * test * u_noisyEffect + textureCoord.x, (0.3 + u_isMobile * 4.) * test *u_noisyEffect + textureCoord.y)).rgb;
     gl_FragColor = vec4(textureColor,1.);
 
 }
