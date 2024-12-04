@@ -7,6 +7,7 @@ varying float vWave;
 uniform sampler2D uSampler0;
 
 uniform float u_time;
+uniform float u_isMobile;
 uniform vec2 u_mouse;
 uniform vec2 u_res;
 uniform float u_noisyEffect;
