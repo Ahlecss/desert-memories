@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         {children}
-        <Menu />
+        {/* <Menu /> */}
         <GoogleAnalytics gaId="G-8ZPZBV2F61" />
 
       </body>

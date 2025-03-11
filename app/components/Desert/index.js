@@ -234,39 +234,39 @@ function Gallery(props) {
     }, [])
 
     const onChangeView = () => {
-    //     setChangeView(false)
-    //     hasChanged.current = !hasChanged.current
-    //     globalCurtains.current.planes.forEach((plane, i) => {
-    //         gsap.to(plane.uniforms.cardsEffect, {
-    //             value: hasChanged.current ? 10 : 3,
-    //             duration: 2,
-    //             delay: 0.2 * i,
-    //             ease: Power4.easeInOut
-    //         })
-    //         gsap.to(plane.uniforms.initialPositionY, {
-    //             value: hasChanged.current ? 9 : 2.5,
-    //             duration: 2,
-    //             delay: 3,
-    //             ease: Power4.easeInOut,
-    //         }).then(() => {
-    //             setChangeView(true)
-    //         })
-    //     })
+        setChangeView(false)
+        hasChanged.current = !hasChanged.current
+        globalCurtains.current.planes.forEach((plane, i) => {
+            gsap.to(plane.uniforms.cardsEffect, {
+                value: hasChanged.current ? 10 : 3,
+                duration: 2,
+                delay: 0.2 * i,
+                ease: Power4.easeInOut
+            })
+            gsap.to(plane.uniforms.initialPositionY, {
+                value: hasChanged.current ? 9 : 2.5,
+                duration: 2,
+                delay: 3,
+                ease: Power4.easeInOut,
+            }).then(() => {
+                setChangeView(true)
+            })
+        })
     }
 
     const onChangeNoisy = () => {
-    //     setChangeView(false)
-    //     hasNoisy.current = !hasNoisy.current
-    //     globalCurtains.current.planes.forEach((plane, i) => {
-    //         gsap.to(plane.uniforms.noisyEffect, {
-    //             value: hasNoisy.current ? 0 : 1,
-    //             duration: 2,
-    //             delay: 0.2 * i,
-    //             ease: Power4.easeInOut
-    //         }).then(() => {
-    //             setChangeView(true)
-    //         })
-    //     })
+        setChangeView(false)
+        hasNoisy.current = !hasNoisy.current
+        globalCurtains.current.planes.forEach((plane, i) => {
+            gsap.to(plane.uniforms.noisyEffect, {
+                value: hasNoisy.current ? 0 : 1,
+                duration: 2,
+                delay: 0.2 * i,
+                ease: Power4.easeInOut
+            }).then(() => {
+                setChangeView(true)
+            })
+        })
     }
 
     const onResize = () => {
